@@ -10,16 +10,44 @@
 
 using namespace std;
 
-int grid[9][9] = {};
-int check_grid
+int grid[9][9] = {{0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0,0,0}};
+int check_grid[9][9] = {};
+//cekuje pri lahsiej obtiaznosti cekovania(cekuje input s uz dokoncenym sudoku)
+bool check_easy()
+{
 
+} 
+
+//cekuje relativne input pouzivatela
 bool check_input()
 {
     
-} 
+}
+
+void insert_numbers()
+{
+    int x;
+    int y;
+    int hodnota;
+    cout << "zadaj hodnotu x: ";
+    cin >> x; cout << "\n";
+    cout << "zadaj hodnout y: ";
+    cin >> y ; cout << "\n";
+    cout << "zadaj hodnotu ktoru chces vlozit: ";
+    cin >> hodnota; cout << "\n";
+    grid[x - 1][y - 1] = hodnota;
+}
 
 //zadavanie hodnuot do hracej plochy
-void grid_insert()
+void grid_insert(int a[][9])
 {  
     string line;
     vector<string> lines;
@@ -51,7 +79,7 @@ void grid_insert()
         }
         else{
             //-48 pretoze davame char do int a inak to neslo
-            grid[row][column]= using_line[i] - 48;
+            a[row][column]= using_line[i] - 48;
             column++;
         }
     }
@@ -82,6 +110,10 @@ void print_grid()
 
 int main()
 {
-    grid_insert();
-    print_grid();
+    grid_insert(check_grid);
+    for (int i = 0; i < 10; i++)
+    {
+        print_grid();
+        insert_numbers();
+    }
 }
