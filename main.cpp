@@ -32,6 +32,12 @@ int pos_x = 0;
 
 int pos_y = 0;
 
+void prestavka(float delay){
+	delay *= CLOCKS_PER_SEC;
+	clock_t now = clock();
+	while (clock() - now < delay);
+}
+
 //cekuje pri lahsiej obtiaznosti cekovania(cekuje input s uz dokoncenym sudoku)
 bool check_easy()
 {
@@ -110,50 +116,50 @@ void print_grid()
 void key_input(string part) 
 {
     int c = 0;
-    switch((c=getch())) {
+    switch((c=_getch())) {
     case KEY_UP:
         if(part=="insert")
         {
-            //cout << "up";
             pos_y--;
             if(pos_y < 0)
             {
                 pos_y = 8;
             }
         }
+        c = 0;
         break;
     case KEY_DOWN:
         if(part=="insert")
         {
-            //cout << "down";
             pos_y++;
             if (pos_y > 8)
             {
                 pos_y = 0;
-            }     
+            }
         }
+        c = 0;
         break;
     case KEY_LEFT:
         if(part=="insert")
         {
-            //cout << "left";
             pos_x--;
             if (pos_x < 0)
             {
                 pos_x = 8;
             }
         }
+        c = 0;
         break;
     case KEY_RIGHT:
         if(part=="insert")
         {
-            //cout << "right";
             pos_x++;
             if (pos_x > 8)
             {
                 pos_x = 0;
             }
         }
+        c = 0;
         break;
     default:
         c = 0;
@@ -166,21 +172,25 @@ void insert_numbers()
 {
     int last_pos_x = 0;
     int last_pos_y = 0;
+    char last_char;
     
-    //int hodnota = 0;
+    last_pos_x = pos_x; 
+    last_pos_y = pos_y;
+    last_char = grid[pos_x][pos_y];
+
     key_input("insert");
     //cout << pos_x << "\n" << pos_y << "\n";
     grid[pos_y][pos_x] = 'x';
-    /*last_pos_x = pos_x; 
-    last_pos_y = pos_y; */ 
-    // zatial iba komentar ale tieto premenne by som chcel vyuzit na spatne prepisovanie na hodnotu aby tam nebolo x
+    grid[last_pos_y][last_pos_x] = last_char;
 
     //grid[x][y] = hodnota;
+    //int hodnota = 0;
 }
 
 int main()
 {
     grid_insert(check_grid);
+    print_grid();
     while(1){
         insert_numbers();
     }
