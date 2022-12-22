@@ -7,8 +7,14 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <conio.h>
 
 using namespace std;
+
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
 
 int grid[9][9] = {{0,0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0,0},
@@ -19,7 +25,13 @@ int grid[9][9] = {{0,0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0,0},
                     {0,0,0,0,0,0,0,0,0}};
+
 int check_grid[9][9] = {};
+
+int pos_x = 0;
+
+int pos_y = 0;
+
 //cekuje pri lahsiej obtiaznosti cekovania(cekuje input s uz dokoncenym sudoku)
 bool check_easy()
 {
@@ -30,20 +42,6 @@ bool check_easy()
 bool check_input()
 {
     
-}
-
-void insert_numbers()
-{
-    int x;
-    int y;
-    int hodnota;
-    cout << "zadaj hodnotu x: ";
-    cin >> x; cout << "\n";
-    cout << "zadaj hodnout y: ";
-    cin >> y ; cout << "\n";
-    cout << "zadaj hodnotu ktoru chces vlozit: ";
-    cin >> hodnota; cout << "\n";
-    grid[x - 1][y - 1] = hodnota;
 }
 
 //zadavanie hodnuot do hracej plochy
@@ -108,12 +106,77 @@ void print_grid()
     cout << " + \n";
 }
 
+//pozera na inputy v konzole - posuvanie sipkami
+void key_input(string part) 
+{
+    int c = 0;
+    switch((c=getch())) {
+    case KEY_UP:
+        if(part=="insert")
+        {
+            //cout << "up";
+            pos_y--;
+            if(pos_y < 0)
+            {
+                pos_y = 8;
+            }
+        }
+        break;
+    case KEY_DOWN:
+        if(part=="insert")
+        {
+            //cout << "down";
+            pos_y++;
+            if (pos_y > 8)
+            {
+                pos_y = 0;
+            }
+        }
+        break;
+    case KEY_LEFT:
+        if(part=="insert")
+        {
+            //cout << "left";
+            pos_x++;
+            if (pos_x > 8)
+            {
+                pos_x = 0;
+            }
+        }
+        break;
+    case KEY_RIGHT:
+        if(part=="insert")
+        {
+            //cout << "right";
+            pos_x--;
+            if (pos_x < 0)
+            {
+                pos_x = 8;
+            }
+        }
+        break;
+    default:
+        c = 0;
+        break;
+    }
+}
+void insert_numbers(int x, int y)
+{
+    //int hodnota = 0;
+    key_input("insert");
+    cout << pos_x << "\n" << pos_y << "\n";
+    //grid[x][y] = hodnota;
+}
+
 int main()
 {
+    int pos_x = 0;
+    int pos_y = 0;
     grid_insert(check_grid);
-    for (int i = 0; i < 10; i++)
-    {
+    while(1){
         print_grid();
-        insert_numbers();
+        system("cls");
+        //insert_numbers(pos_x,pos_y);
     }
+    
 }
