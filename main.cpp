@@ -16,17 +16,17 @@ using namespace std;
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 
-int grid[9][9] = {{0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0},
-                    {0,0,0,0,0,0,0,0,0}};
+char grid[9][9] = {{'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'},
+                    {'0','0','0','0','0','0','0','0','0'}};
 
-int check_grid[9][9] = {};
+char check_grid[9][9] = {};
 
 int pos_x = 0;
 
@@ -45,7 +45,7 @@ bool check_input()
 }
 
 //zadavanie hodnuot do hracej plochy
-void grid_insert(int a[][9])
+void grid_insert(char a[][9])
 {  
     string line;
     vector<string> lines;
@@ -77,7 +77,7 @@ void grid_insert(int a[][9])
         }
         else{
             //-48 pretoze davame char do int a inak to neslo
-            a[row][column]= using_line[i] - 48;
+            a[row][column]= using_line[i];
             column++;
         }
     }
@@ -130,24 +130,13 @@ void key_input(string part)
             if (pos_y > 8)
             {
                 pos_y = 0;
-            }
+            }     
         }
         break;
     case KEY_LEFT:
         if(part=="insert")
         {
             //cout << "left";
-            pos_x++;
-            if (pos_x > 8)
-            {
-                pos_x = 0;
-            }
-        }
-        break;
-    case KEY_RIGHT:
-        if(part=="insert")
-        {
-            //cout << "right";
             pos_x--;
             if (pos_x < 0)
             {
@@ -155,28 +144,45 @@ void key_input(string part)
             }
         }
         break;
+    case KEY_RIGHT:
+        if(part=="insert")
+        {
+            //cout << "right";
+            pos_x++;
+            if (pos_x > 8)
+            {
+                pos_x = 0;
+            }
+        }
+        break;
     default:
         c = 0;
+        system("cls");
+        print_grid();
         break;
     }
 }
-void insert_numbers(int x, int y)
+void insert_numbers()
 {
+    int last_pos_x = 0;
+    int last_pos_y = 0;
+    
     //int hodnota = 0;
     key_input("insert");
-    cout << pos_x << "\n" << pos_y << "\n";
+    //cout << pos_x << "\n" << pos_y << "\n";
+    grid[pos_y][pos_x] = 'x';
+    /*last_pos_x = pos_x; 
+    last_pos_y = pos_y; */ 
+    // zatial iba komentar ale tieto premenne by som chcel vyuzit na spatne prepisovanie na hodnotu aby tam nebolo x
+
     //grid[x][y] = hodnota;
 }
 
 int main()
 {
-    int pos_x = 0;
-    int pos_y = 0;
     grid_insert(check_grid);
     while(1){
-        print_grid();
-        system("cls");
-        //insert_numbers(pos_x,pos_y);
+        insert_numbers();
     }
     
 }
