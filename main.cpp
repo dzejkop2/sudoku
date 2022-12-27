@@ -218,14 +218,17 @@ void insert_numbers()
     int last_pos_y = 0;
     char last_char;
     
+    last_char = grid[pos_y][pos_x];
     last_pos_x = pos_x; 
     last_pos_y = pos_y;
-    last_char = grid[pos_x][pos_y];
 
-    key_input("insert");
-    //cout << pos_x << "\n" << pos_y << "\n";
     grid[pos_y][pos_x] = 'x';
+    key_input("insert");
     grid[last_pos_y][last_pos_x] = last_char;
+
+    
+    //cout << pos_x << "\n" << pos_y << "\n";
+   
 
     //grid[x][y] = hodnota;
     //int hodnota = 0;
