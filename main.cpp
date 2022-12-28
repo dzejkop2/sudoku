@@ -15,6 +15,8 @@ using namespace std;
 #define KEY_DOWN 80
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
+#define KEY_SPACE 32
+#define KEY_ENTER 13
 
 char grid[9][9] = {{'9','0','0','0','0','0','0','0','0'},
                     {'8','0','0','0','0','0','0','0','0'},
@@ -203,6 +205,16 @@ void key_input(string part)
                 pos_x = 0;
             }
         }
+        c = 0;
+        break;
+    case KEY_ENTER:
+        if (part=="insert")
+        {
+            
+        }
+        c = 0;
+        break;
+    case KEY_SPACE:
         c = 0;
         break;
     default:
