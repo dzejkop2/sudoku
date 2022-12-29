@@ -137,62 +137,174 @@ void print_grid()
     }
 }
 
-//pozera na inputy v konzole
-void key_input(string part, char insert) 
+void UP()
 {
+    pos_y--;
+    if(pos_y < 0)
+    {
+        pos_y = 8;
+    }
+    if (grid[pos_y][pos_x] == '0')
+    {
+        grid[pos_y][pos_x] = 'x';
+    }
+    if (pos_y != 8)
+    {
+        if (grid[pos_y + 1][pos_x] == 'x')
+        {
+            grid[pos_y + 1][pos_x] = '0';
+            return;
+        }
+        else return;
+    }
+    else if (pos_y == 8)
+    {
+        if (grid[0][pos_x] == 'x')
+        {
+            grid[0][pos_x] = '0';
+            return;
+        }
+        else return;
+    }
+}
+
+void DOWN()
+{
+    pos_y++;
+    if (pos_y > 8)
+    {
+        pos_y = 0;
+    }
+    if (grid[pos_y][pos_x] == '0')
+    {
+        grid[pos_y][pos_x] = 'x';
+    }
+    if (pos_y != 0)
+    {
+        if (grid[pos_y - 1][pos_x] == 'x')
+        {
+            grid[pos_y - 1][pos_x] = '0';
+            return;
+        }
+        else return;
+    }
+    else if (pos_y == 0)
+    {
+        if (grid[8][pos_x] == 'x')
+        {
+            grid[8][pos_x] = '0';
+            return;
+        }
+        else return;
+    }
+}
+
+void LEFT()
+{
+    pos_x--;
+    if (pos_x < 0)
+    {
+        pos_x = 8;
+    }
+    if (grid[pos_y][pos_x] == '0')
+    {
+        grid[pos_y][pos_x] = 'x';
+    }
+    if (pos_x != 8)
+    {
+        if (grid[pos_y][pos_x + 1] == 'x')
+        {
+            grid[pos_y][pos_x + 1] = '0';
+            return;
+        }
+        else return;
+    }
+    else if (pos_x == 8)
+    {
+        if (grid[pos_y][0] == 'x')
+        {
+            grid[pos_y][0] = '0';
+            return;
+        }
+        else return;  
+    }
+    
+}
+
+void RIGHT()
+{
+    pos_x++;
+    if (pos_x > 8)
+    {
+        pos_x = 0;
+    }
+    if (grid[pos_y][pos_x] == '0')
+    {
+        grid[pos_y][pos_x] = 'x';
+    }
+    if (pos_x != 0)
+    {
+        if (grid[pos_y][pos_x - 1] == 'x')
+        {
+            grid[pos_y][pos_x - 1] = '0';
+            return;
+        }
+        else return;
+    }
+    else if (pos_x == 0)
+    {
+        if (grid[pos_y][8] == 'x')
+        {
+            grid[pos_y][8] = '0';
+            return;
+        }
+        else return;
+    }
+}
+
+void refresh()
+{
+    system("cls");
+    print_grid();
+}
+
+//pozera na inputy v konzole
+void key_input(string part) 
+{
+    char insert;
     int c = 0;
     switch((c=_getch())) {
     case KEY_UP:
         if(part=="insert")
         {
             c = 0;
-            pos_y--;
-            if(pos_y < 0)
-            {
-                pos_y = 8;
-            }
+            UP();
+            refresh();
         }
-        system("cls");
-        print_grid();
         break;
     case KEY_DOWN:
         if(part=="insert")
         {
             c = 0;
-            pos_y++;
-            if (pos_y > 8)
-            {
-                pos_y = 0;
-            }
+            DOWN();
+            refresh();
         }
-        system("cls");
-        print_grid();
         break;
     case KEY_LEFT:
         if(part=="insert")
         {
             c = 0;
-            pos_x--;
-            if (pos_x < 0)
-            {
-                pos_x = 8;
-            }
+            LEFT();
+            refresh();
         }
-        system("cls");
-        print_grid();
         break;
     case KEY_RIGHT:
         if(part=="insert")
         {
             c = 0;
-            pos_x++;
-            if (pos_x > 8)
-            {
-                pos_x = 0;
-            }
+            RIGHT();
+            refresh();
         }
-        system("cls");
-        print_grid();
         break;
     case KEY_ENTER:
         if (part=="insert")
@@ -212,38 +324,12 @@ void key_input(string part, char insert)
     
     }
 }
-void move()
-{
-    int last_pos_x = 0;
-    int last_pos_y = 0;
-    char last_char;
-    char insert = '0';
-    
-    last_char = grid[pos_y][pos_x];
-    last_pos_x = pos_x; 
-    last_pos_y = pos_y;
-
-    if (grid[pos_y][pos_x] == '0')
-    {
-        grid[pos_y][pos_x] = 'x';
-        key_input("insert", insert);
-        grid[last_pos_y][last_pos_x] = last_char;
-    }
-    else 
-    {
-        key_input("insert", insert);
-    }
-    
-   
-    //grid[x][y] = hodnota;
-    //int hodnota = 0;
-}
 
 int main()
 {
     grid_insert(check_grid);
     print_grid();
     while(1){
-        move();
+        key_input("insert");
     }
 }
