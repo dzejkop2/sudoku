@@ -15,7 +15,7 @@ using namespace std;
 #define KEY_DOWN 80
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
-#define KEY_SPACE 32
+//#define KEY_SPACE 32
 #define KEY_ENTER 13
 
 char grid[9][9] = {{'9','0','0','0','0','0','0','0','0'},
@@ -92,27 +92,6 @@ void grid_insert(char a[][9])
 }
 
 //vypisovanie plochy
-/*void print_grid()
-{
-    for (int i = 0; i < 9; i++)
-    {
-        for (int j = 0; j < 9; j++)
-        {
-            cout << " + " << "-";
-        }
-        cout << " + \n";
-        for (int j = 0; j < 9; j++)
-        {   
-            cout << " | " << grid[i][j];
-        }
-        cout << " | \n";
-    }
-    for (int j = 0; j < 9; j++)
-    {
-        cout << " + " << "-";
-    }
-    cout << " + \n";
-}*/
 void print_grid()
 {   
     //vypise hornu hranicu
@@ -158,90 +137,104 @@ void print_grid()
     }
 }
 
-//pozera na inputy v konzole - posuvanie sipkami
-void key_input(string part) 
+//pozera na inputy v konzole
+void key_input(string part, char insert) 
 {
     int c = 0;
     switch((c=_getch())) {
     case KEY_UP:
         if(part=="insert")
         {
+            c = 0;
             pos_y--;
             if(pos_y < 0)
             {
                 pos_y = 8;
             }
         }
-        c = 0;
+        system("cls");
+        print_grid();
         break;
     case KEY_DOWN:
         if(part=="insert")
         {
+            c = 0;
             pos_y++;
             if (pos_y > 8)
             {
                 pos_y = 0;
             }
         }
-        c = 0;
+        system("cls");
+        print_grid();
         break;
     case KEY_LEFT:
         if(part=="insert")
         {
+            c = 0;
             pos_x--;
             if (pos_x < 0)
             {
                 pos_x = 8;
             }
         }
-        c = 0;
+        system("cls");
+        print_grid();
         break;
     case KEY_RIGHT:
         if(part=="insert")
         {
+            c = 0;
             pos_x++;
             if (pos_x > 8)
             {
                 pos_x = 0;
             }
         }
-        c = 0;
+        system("cls");
+        print_grid();
         break;
     case KEY_ENTER:
         if (part=="insert")
         {
-            
+            cout << "\n\tZadaj hodnotu ktoru chces zadat: ";
+            cin >> insert;
         }
-        c = 0;
-        break;
-    case KEY_SPACE:
-        c = 0;
-        break;
-    default:
         c = 0;
         system("cls");
         print_grid();
         break;
+    /*
+    case KEY_SPACE:
+        c = 0;
+        break;
+    */
+    
     }
 }
-void insert_numbers()
+void move()
 {
     int last_pos_x = 0;
     int last_pos_y = 0;
     char last_char;
+    char insert = '0';
     
     last_char = grid[pos_y][pos_x];
     last_pos_x = pos_x; 
     last_pos_y = pos_y;
 
-    grid[pos_y][pos_x] = 'x';
-    key_input("insert");
-    grid[last_pos_y][last_pos_x] = last_char;
-
+    if (grid[pos_y][pos_x] == '0')
+    {
+        grid[pos_y][pos_x] = 'x';
+        key_input("insert", insert);
+        grid[last_pos_y][last_pos_x] = last_char;
+    }
+    else 
+    {
+        key_input("insert", insert);
+    }
     
-    //cout << pos_x << "\n" << pos_y << "\n";
    
-
     //grid[x][y] = hodnota;
     //int hodnota = 0;
 }
@@ -251,7 +244,6 @@ int main()
     grid_insert(check_grid);
     print_grid();
     while(1){
-        insert_numbers();
+        move();
     }
-    
 }
