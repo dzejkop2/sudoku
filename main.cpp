@@ -18,7 +18,7 @@ using namespace std;
 //#define KEY_SPACE 32
 #define KEY_ENTER 13
 
-char grid[9][9] = {{'9','0','0','0','0','0','0','0','0'},
+char grid[9][9] = {{'0','0','0','0','0','0','0','0','0'},
                     {'8','0','0','0','0','0','0','0','0'},
                     {'7','0','0','0','0','0','0','0','0'},
                     {'6','0','0','0','0','0','0','0','0'},
@@ -34,26 +34,19 @@ int pos_x = 0;
 
 int pos_y = 0;
 
+string entre = "\n \n \n \n \n \n \n \n \n \n \n \n ";
+
 void prestavka(float delay){
 	delay *= CLOCKS_PER_SEC;
 	clock_t now = clock();
 	while (clock() - now < delay);
 }
 
-//cekuje pri lahsiej obtiaznosti cekovania(cekuje input s uz dokoncenym sudoku)
-bool check_easy()
-{
 
-} 
-
-//cekuje relativne input pouzivatela
-bool check_input()
-{
-    
-}
+void key_input(string instert);
 
 //zadavanie hodnuot do hracej plochy
-void grid_insert(char a[][9])
+void grid_insert(char a[][9] , string subor)
 {  
     string line;
     vector<string> lines;
@@ -63,7 +56,7 @@ void grid_insert(char a[][9])
     srand(time(NULL));
     
     //input file stream
-    ifstream file("Sources/layouts.txt");
+    ifstream file(subor);
     
     //spocita pocet riadkov v subore 
     int total_lines=0;
@@ -268,6 +261,35 @@ void refresh()
     print_grid();
 }
 
+void ENTER()
+{
+    char insert;
+    if (grid[pos_y][pos_x] == 'x')
+    {
+        cout << "\nZadaj hodnotu ktoru chces zadat: ";
+        cin >> insert;
+        if (insert == '1' or insert == '2' or insert == '3' or insert == '4' or insert == '5' or insert == '6' or insert == '7' or insert == '8' or insert == '9')
+        {
+            grid[pos_y][pos_x] = insert;
+            if (grid[pos_y][pos_x] == check_grid[pos_y][pos_x])
+            {
+                refresh();
+            }
+            else 
+            {
+                grid[pos_y][pos_x] = 'x';
+                refresh();
+                cout << "\nZla odpoved!";
+            }
+        }
+        else 
+        {
+            cout << "\nSkus znova!";
+        }
+    }
+    else return;
+}
+
 //pozera na inputy v konzole
 void key_input(string part) 
 {
@@ -309,12 +331,9 @@ void key_input(string part)
     case KEY_ENTER:
         if (part=="insert")
         {
-            cout << "\n\tZadaj hodnotu ktoru chces zadat: ";
-            cin >> insert;
+            ENTER();
         }
         c = 0;
-        system("cls");
-        print_grid();
         break;
     /*
     case KEY_SPACE:
@@ -325,11 +344,76 @@ void key_input(string part)
     }
 }
 
+int menu()
+{
+	string subor = "Sources/layouts.txt";
+    string menu[3] = {"Start", "Nastavenia", "Koniec"};
+    string nastavenia[2] = {"Obtiaznost", "Dzejkop je gay(kontrola policok)"};
+    string obtiaznosti[3] = {"Easy", "Medium", "Hard"};
+	
+    system("color 0A");
+	
+    
+    cout << entre << setw(60)<< "Ahoj!\n";
+	prestavka(2);
+	system("cls"); cout << entre << setw(65) << "Vitaj v nasom sudoku!" << endl;
+	prestavka(2); system("cls"); cout << entre;
+	while(1)
+	{
+        for (int i = 0; i < 3; i++)
+		{
+			cout << setw(50) << i+1 << ". " << menu[i] << endl;
+		}
+		
+		int volba;
+		cin >> volba;
+		switch (volba)
+		{
+		case 1: 
+            system("cls");
+			grid_insert(check_grid, subor);
+            print_grid();
+            while(1){
+                key_input("insert");
+                    }
+		case 2: 
+			for(int y = 0; y < 2; y++)
+            
+            {
+                system("cls"); cout << entre << setw(50) << y+1 << ". " << nastavenia[y-1] << endl;
+            }{
+                int vyber;
+                cin >> vyber;
+                switch (vyber){
+                    case 1:
+                        for (int z = 0; z < 3; z++){
+                            cout << setw(50) << z+1 << ". " << obtiaznosti[z] << endl;
+                        }
+                        int difficulty;
+                        cin >> difficulty;
+                        switch(difficulty){
+                                case 1: 
+                                    subor = "Sources/easy_layouts.txt"; 
+                                case 2: 
+                                    subor = "Sources/medium_layouts.txt";  
+                                case 3: 
+                                    subor = "Sources/hard_layouts.txt"; 
+                                default: continue;
+                        }
+                    case 2:
+                        cout << "Toto neni spravene, vypadni dzejkop"; break;
+                }
+
+            }
+		case 3: 
+			exit(0); break;
+		default: 
+			cout << "Zadajte cislo 1-3" << endl; break;
+		}
+	}
+}
+
 int main()
 {
-    grid_insert(check_grid);
-    print_grid();
-    while(1){
-        key_input("insert");
-    }
+    menu();
 }
