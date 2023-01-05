@@ -87,7 +87,8 @@ void grid_insert(char a[][9] , string subor)
 //vypisovanie plochy
 void print_grid()
 {   
-    //vypise hornu hranicu
+    SetConsoleTextAttribute(0, 4);
+     //vypise hornu hranicu
     for (int i = 0; i < 37; i++)
     {
         cout << "#";
@@ -104,7 +105,28 @@ void print_grid()
         {
             for (int k = 0; k < 3; k++)
             {
-                cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k] << " |";
+                //zafarbi poziciu hraca
+                if((((i+1)/2)-1)+(f*3) == pos_y && (j*3+k) == pos_x)
+                {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+                    cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k];
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+                    cout << " |";
+                }
+                else if(grid[(((i+1)/2)-1)+(f*3)][j*3+k] == '0')
+                {
+                    cout << "   |";
+                }
+                else if(grid[(((i+1)/2)-1)+(f*3)][j*3+k] == 'x')
+                {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+                    cout << " " << 'x' << " |";
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+                }
+                else
+                {
+                    cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k] << " |";
+                }
             }
             cout << "\b\b" << " #";
         }
