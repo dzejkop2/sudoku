@@ -45,8 +45,14 @@ void prestavka(float delay){
 
 void key_input(string instert);
 
+//zafarbi nasledujuci text podla zadanej farby
+void color(int color)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
 //zadavanie hodnuot do hracej plochy
-void grid_insert(char a[][9] , string subor)
+void grid_insert(char a[][9], char a_check[][9], string subor)
 {  
     string line;
     vector<string> lines;
@@ -70,15 +76,30 @@ void grid_insert(char a[][9] , string subor)
     int random_number=rand()%total_lines;
 
     string using_line = lines[random_number];
-    for(int i=0;i<using_line.length();i++)
+    //zapisovanie do hracieho pola
+    for(int i=0;i<89;i++)
     {
         if(using_line[i]==';'){  
             row++;
             column=0;
         }
         else{
-            //-48 pretoze davame char do int a inak to neslo
+            //-48 pretoze davame char do int a inak to neslo [opravene :( bude mi to chybat]
             a[row][column]= using_line[i];
+            column++;
+        }
+    }
+    column = 0;
+    row = 0;
+    //zapisovanie do kontrolneho pola
+    for(int i=94;i<using_line.length();i++)
+    {
+        if(using_line[i]==';'){  
+            row++;
+            column=0;
+        }
+        else{
+            a_check[row][column]= using_line[i];
             column++;
         }
     }
@@ -87,7 +108,7 @@ void grid_insert(char a[][9] , string subor)
 //vypisovanie plochy
 void print_grid()
 {   
-    SetConsoleTextAttribute(0, 4);
+    color(10);
      //vypise hornu hranicu
     for (int i = 0; i < 37; i++)
     {
@@ -108,9 +129,9 @@ void print_grid()
                 //zafarbi poziciu hraca
                 if((((i+1)/2)-1)+(f*3) == pos_y && (j*3+k) == pos_x)
                 {
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+                    color(12);
                     cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k];
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+                    color(10);
                     cout << " |";
                 }
                 else if(grid[(((i+1)/2)-1)+(f*3)][j*3+k] == '0')
@@ -119,13 +140,16 @@ void print_grid()
                 }
                 else if(grid[(((i+1)/2)-1)+(f*3)][j*3+k] == 'x')
                 {
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+                    color(12);
                     cout << " " << 'x' << " |";
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+                    color(10);
                 }
                 else
                 {
-                    cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k] << " |";
+                    color(11);
+                    cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k];
+                    color(10);
+                    cout << " |";
                 }
             }
             cout << "\b\b" << " #";
@@ -151,6 +175,15 @@ void print_grid()
     cout << "\n";
     }
 }
+void vypis_vyzvu()
+{
+    cout << "\nPre vybratie policka stlacte ";
+    color(9);
+    cout << "\"ENTER\"";
+    color(10);
+}
+
+
 
 void UP()
 {
@@ -368,7 +401,7 @@ void key_input(string part)
 
 int menu()
 {
-	string subor = "Sources/layouts.txt";
+	string subor = "Sources/easy_layouts.txt";
     string menu[3] = {"Start", "Nastavenia", "Koniec"};
     string nastavenia[2] = {"Obtiaznost", "Dzejkop je gay(kontrola policok)"};
     string obtiaznosti[3] = {"Easy", "Medium", "Hard"};
@@ -393,8 +426,9 @@ int menu()
 		{
 		case 1: 
             system("cls");
-			grid_insert(check_grid, subor);
+			grid_insert(grid, check_grid, subor);
             print_grid();
+            vypis_vyzvu();
             while(1){
                 key_input("insert");
                     }
