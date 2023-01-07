@@ -1,3 +1,4 @@
+#define _WIN32_WINNT 0x0500
 #include <iostream>
 #include <cstdio>
 #include <ctime>
@@ -18,29 +19,22 @@ using namespace std;
 //#define KEY_SPACE 32
 #define KEY_ENTER 13
 
-char grid[9][9] = {{'0','0','0','0','0','0','0','0','0'},
-                    {'8','0','0','0','0','0','0','0','0'},
-                    {'7','0','0','0','0','0','0','0','0'},
-                    {'6','0','0','0','0','0','0','0','0'},
-                    {'5','0','0','0','5','0','0','0','0'},
-                    {'0','0','0','0','0','0','0','0','0'},
-                    {'0','0','0','0','0','0','0','0','0'},
-                    {'0','0','0','0','0','0','0','0','0'},
-                    {'0','0','0','0','0','0','0','8','0'}};
-
+char grid[9][9] = {};
 char check_grid[9][9] = {};
 
 int pos_x = 0;
-
 int pos_y = 0;
 
-string entre = "\n \n \n \n \n \n \n \n \n \n \n \n ";
+int difficulty = 1;
 
 void prestavka(float delay){
 	delay *= CLOCKS_PER_SEC;
 	clock_t now = clock();
 	while (clock() - now < delay);
 }
+
+void credits()
+{}
 
 
 void key_input(string instert);
@@ -49,6 +43,14 @@ void key_input(string instert);
 void color(int color)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+void setpos(int x, int y)
+{
+    COORD CursorPosition;
+    CursorPosition.X = x;
+    CursorPosition.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CursorPosition);
 }
 
 //zadavanie hodnuot do hracej plochy
@@ -105,10 +107,47 @@ void grid_insert(char a[][9], char a_check[][9], string subor)
     }
 }
 
+void vypis_vyzvu()
+{
+    cout << "Pre vybratie policka stlacte ";
+    color(6);
+    cout << "\"ENTER\"";
+}
+
+void sudoku(int a)
+{
+    color(a);
+    cout << "\n\t########\n";
+    cout << "\t#";
+    color(8);
+    cout << "Sudoku";
+    color(a);
+    cout << "#" << "\t|| ";
+    if(difficulty == 1)
+    {
+        color(10);
+        cout << "Easy";
+    }
+    else if(difficulty == 2)
+    {
+        color(6);
+        cout << "Medium";
+    }
+    else
+    {
+        color(4);
+        cout << "Hard";
+    }
+    color(a);
+    cout << " ||\n";
+    cout << "\t########\n\n";
+}
+
 //vypisovanie plochy
 void print_grid()
 {   
-    color(10);
+    sudoku(9);
+    color(9);
      //vypise hornu hranicu
     for (int i = 0; i < 37; i++)
     {
@@ -131,7 +170,7 @@ void print_grid()
                 {
                     color(12);
                     cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k];
-                    color(10);
+                    color(9);
                     cout << " |";
                 }
                 else if(grid[(((i+1)/2)-1)+(f*3)][j*3+k] == '0')
@@ -142,13 +181,13 @@ void print_grid()
                 {
                     color(12);
                     cout << " " << 'x' << " |";
-                    color(10);
+                    color(9);
                 }
                 else
                 {
-                    color(11);
+                    color(7);
                     cout << " " << grid[(((i+1)/2)-1)+(f*3)][j*3+k];
-                    color(10);
+                    color(9);
                     cout << " |";
                 }
             }
@@ -174,16 +213,10 @@ void print_grid()
     }
     cout << "\n";
     }
+    setpos(45,13);
+    vypis_vyzvu();
+    setpos(0,25);
 }
-void vypis_vyzvu()
-{
-    cout << "\nPre vybratie policka stlacte ";
-    color(9);
-    cout << "\"ENTER\"";
-    color(10);
-}
-
-
 
 void UP()
 {
@@ -310,22 +343,39 @@ void RIGHT()
     }
 }
 
+bool check_win()
+{
+    for (int i = 0; i < 9; i++)
+    {
+        for (int b = 0; b < 9; b++)
+        {
+            if (grid[i][b] != '0' && grid[i][b] != 'x' )
+            {
+                continue;
+            }
+            else return false;
+        }
+    }
+    return true;
+}
+
 void refresh()
 {
+    check_win();
     system("cls");
     print_grid();
 }
 
 void ENTER()
 {
-    char insert;
+    int insert;
     if (grid[pos_y][pos_x] == 'x')
     {
-        cout << "\nZadaj hodnotu ktoru chces zadat: ";
-        cin >> insert;
-        if (insert == '1' or insert == '2' or insert == '3' or insert == '4' or insert == '5' or insert == '6' or insert == '7' or insert == '8' or insert == '9')
+        cout << "Zadaj hodnotu ktoru chces zadat: "; color(11);
+        cin >> insert; color(7);
+        if (insert > 0 && insert <= 9)
         {
-            grid[pos_y][pos_x] = insert;
+            grid[pos_y][pos_x] = insert + 48; // 48 incident kde plujeme int do charu, neni to najlepsie riesenie ale je to lahsie ;)
             if (grid[pos_y][pos_x] == check_grid[pos_y][pos_x])
             {
                 refresh();
@@ -334,12 +384,12 @@ void ENTER()
             {
                 grid[pos_y][pos_x] = 'x';
                 refresh();
-                cout << "\nZla odpoved!";
+                cout << "Zla odpoved!\n";
             }
         }
         else 
         {
-            cout << "\nSkus znova!";
+            cout << "Skus znova!\n";
         }
     }
     else return;
@@ -405,14 +455,19 @@ int menu()
     string menu[3] = {"Start", "Nastavenia", "Koniec"};
     string nastavenia[2] = {"Obtiaznost", "Dzejkop je gay(kontrola policok)"};
     string obtiaznosti[3] = {"Easy", "Medium", "Hard"};
+    string entre = "\n \n \n \n \n \n \n \n \n \n \n \n";
+
+
+    ///////////////////////////////////////
+    
 	
     system("color 0A");
 	
     
     cout << entre << setw(60)<< "Ahoj!\n";
-	prestavka(2);
+	prestavka(0.1);
 	system("cls"); cout << entre << setw(65) << "Vitaj v nasom sudoku!" << endl;
-	prestavka(2); system("cls"); cout << entre;
+	prestavka(0.1); system("cls"); cout << entre;
 	while(1)
 	{
         for (int i = 0; i < 3; i++)
@@ -425,19 +480,26 @@ int menu()
 		switch (volba)
 		{
 		case 1: 
+            bool win;
             system("cls");
 			grid_insert(grid, check_grid, subor);
             print_grid();
-            vypis_vyzvu();
-            while(1){
+            while(1)
+            {
+                check_win();
+                if (check_win() == true)
+                {
+                    break;
+                }
                 key_input("insert");
-                    }
+                break;
+            }
 		case 2: 
 			for(int y = 0; y < 2; y++)
-            
             {
                 system("cls"); cout << entre << setw(50) << y+1 << ". " << nastavenia[y-1] << endl;
-            }{
+            }
+            {
                 int vyber;
                 cin >> vyber;
                 switch (vyber){
@@ -445,16 +507,27 @@ int menu()
                         for (int z = 0; z < 3; z++){
                             cout << setw(50) << z+1 << ". " << obtiaznosti[z] << endl;
                         }
-                        int difficulty;
-                        cin >> difficulty;
-                        switch(difficulty){
-                                case 1: 
-                                    subor = "Sources/easy_layouts.txt"; 
-                                case 2: 
-                                    subor = "Sources/medium_layouts.txt";  
-                                case 3: 
-                                    subor = "Sources/hard_layouts.txt"; 
-                                default: continue;
+                        int diff;
+                        cin >> diff;
+                        cout << diff;
+                        switch(diff)
+                        {
+                            case 1: 
+                                subor = "Sources/easy_layouts.txt"; 
+                                difficulty = 1;
+                                cout << difficulty;
+                                continue;
+                            case 2: 
+                                subor = "Sources/medium_layouts.txt";
+                                difficulty = 2;
+                                cout << difficulty;
+                                continue;  
+                            case 3: 
+                                subor = "Sources/hard_layouts.txt";
+                                difficulty = 3;
+                                cout << difficulty;
+                                continue; 
+                            default: continue;
                         }
                     case 2:
                         cout << "Toto neni spravene, vypadni dzejkop"; break;
@@ -471,5 +544,8 @@ int menu()
 
 int main()
 {
+    system("MODE 90,32");
+    SetWindowLong(GetConsoleWindow(), GWL_STYLE, GetWindowLong(GetConsoleWindow(), GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
     menu();
+    credits();
 }
