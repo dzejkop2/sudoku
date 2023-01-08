@@ -466,13 +466,13 @@ int menu()
     
     cout << entre << setw(50)<< "Ahoj!\n";
 	prestavka(1);
-	system("cls"); cout << entre << setw(50) << "Vitaj v nasom sudoku!" << endl;
+	system("cls"); cout << entre << setw(53) << "Vitaj v nasom sudoku!" << endl;
 	prestavka(1); system("cls"); cout << entre;
 	while(1)
 	{
         for (int i = 0; i < 3; i++)
 		{
-			cout << setw(50) << i+1 << ". " << menu[i] << endl;
+			cout << setw(40) << i+1 << ". " << menu[i] << endl;
 		}
 		
 		int volba;
@@ -501,7 +501,7 @@ int menu()
             cout << entre;
             for(int y = 0; y < 2; y++)
             {
-                cout << setw(50) << y+1 << ". " << nastavenia[y] << endl;
+                cout << setw(40) << y+1 << ". " << nastavenia[y] << endl;
             }
             {
                 int vyber;
@@ -511,7 +511,7 @@ int menu()
                         system("cls");
                         cout << entre;
                         for (int z = 0; z < 3; z++){
-                            cout << setw(50) << z+1 << ". " << obtiaznosti[z] << endl;
+                            cout << setw(40) << z+1 << ". " << obtiaznosti[z] << endl;
                         }
                         int diff;
                         cin >> diff;
