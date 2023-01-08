@@ -464,10 +464,10 @@ int menu()
     system("color 0A");
 	
     
-    cout << entre << setw(60)<< "Ahoj!\n";
-	prestavka(0.1);
-	system("cls"); cout << entre << setw(65) << "Vitaj v nasom sudoku!" << endl;
-	prestavka(0.1); system("cls"); cout << entre;
+    cout << entre << setw(50)<< "Ahoj!\n";
+	prestavka(1);
+	system("cls"); cout << entre << setw(50) << "Vitaj v nasom sudoku!" << endl;
+	prestavka(1); system("cls"); cout << entre;
 	while(1)
 	{
         for (int i = 0; i < 3; i++)
@@ -491,41 +491,46 @@ int menu()
                 {
                     break;
                 }
+                else {
                 key_input("insert");
-                break;
+                continue;
+                }
             }
 		case 2: 
-			for(int y = 0; y < 2; y++)
+			system("cls"); 
+            cout << entre;
+            for(int y = 0; y < 2; y++)
             {
-                system("cls"); cout << entre << setw(50) << y+1 << ". " << nastavenia[y-1] << endl;
+                cout << setw(50) << y+1 << ". " << nastavenia[y] << endl;
             }
             {
                 int vyber;
                 cin >> vyber;
                 switch (vyber){
                     case 1:
+                        system("cls");
+                        cout << entre;
                         for (int z = 0; z < 3; z++){
                             cout << setw(50) << z+1 << ". " << obtiaznosti[z] << endl;
                         }
                         int diff;
                         cin >> diff;
-                        cout << diff;
                         switch(diff)
                         {
                             case 1: 
                                 subor = "Sources/easy_layouts.txt"; 
                                 difficulty = 1;
-                                cout << difficulty;
+                                system("cls");
                                 continue;
                             case 2: 
                                 subor = "Sources/medium_layouts.txt";
                                 difficulty = 2;
-                                cout << difficulty;
-                                continue;  
+                                system("cls");
+                                continue; 
                             case 3: 
                                 subor = "Sources/hard_layouts.txt";
                                 difficulty = 3;
-                                cout << difficulty;
+                                system("cls");
                                 continue; 
                             default: continue;
                         }
