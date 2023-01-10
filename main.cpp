@@ -33,9 +33,71 @@ void prestavka(float delay){
 	while (clock() - now < delay);
 }
 
-void credits()
-{}
-
+/*
+void credits_win(){
+    string entre = "\n \n \n \n \n \n \n \n \n \n \n \n";
+    system("cls"); 
+    cout << entre << setw(40) << "G";
+    Sleep(70);
+    cout << "r";
+    Sleep(70);
+    cout << "a";
+    Sleep(70);
+    cout << "t";
+    Sleep(70);
+    cout << "u";
+    Sleep(70);
+    cout << "l";
+    Sleep(70);
+    cout << "u";
+    Sleep(70);
+    cout << "j";
+    Sleep(70);
+    cout << "e";
+    Sleep(70);
+    cout << "m";
+    Sleep(70);
+    cout << "! \n \n";
+    prestavka(1);
+    cout << setw(40) << "D";
+    Sleep(70);
+    cout << "u";
+    Sleep(70);
+    cout << "f";
+    Sleep(70);
+    cout << "a";
+    Sleep(70);
+    cout << "m";
+    Sleep(70);
+    cout << "e "; 
+    Sleep(70);
+    cout << "z";
+    Sleep(70);
+    cout << "e ";
+    Sleep(70);
+    cout << "s";
+    Sleep(70);
+    cout << "i ";
+    Sleep(70);
+    cout << "s";
+    Sleep(70);
+    cout << "a ";
+    Sleep(70);
+    cout << "z";
+    Sleep(70);
+    cout << "a";
+    Sleep(70);
+    cout << "b";
+    Sleep(70);
+    cout << "a";
+    Sleep(70);
+    cout << "v";
+    Sleep(70);
+    cout << "i";
+    Sleep(70);
+    cout << "l";
+}
+*/
 
 void key_input(string instert);
 
@@ -489,7 +551,8 @@ int menu()
                 check_win();
                 if (check_win() == true)
                 {
-                    break;
+                    //credits_win();
+                    exit(0); break;
                 }
                 else {
                 key_input("insert");
@@ -521,17 +584,30 @@ int menu()
                                 subor = "Sources/easy_layouts.txt"; 
                                 difficulty = 1;
                                 system("cls");
+                                cout << entre << setw(53) << "Nastavil si difficulty Easy";
+                                prestavka(1); 
+                                system("cls"); 
+                                cout << entre; 
                                 continue;
                             case 2: 
                                 subor = "Sources/medium_layouts.txt";
                                 difficulty = 2;
                                 system("cls");
-                                continue; 
+                                cout << entre << setw(53) << "Nastavil si difficulty Medium"; 
+                                prestavka(1); 
+                                system("cls"); 
+                                cout << entre; 
+                                continue;
                             case 3: 
                                 subor = "Sources/hard_layouts.txt";
                                 difficulty = 3;
                                 system("cls");
-                                continue; 
+                                cout << entre << setw(53) << "Nastavil si difficulty Hard"; 
+                                prestavka(1); 
+                                system("cls"); 
+                                cout << entre; 
+                                //credits_win();
+                                continue;
                             default: continue;
                         }
                     case 2:
@@ -552,5 +628,5 @@ int main()
     system("MODE 90,32");
     SetWindowLong(GetConsoleWindow(), GWL_STYLE, GetWindowLong(GetConsoleWindow(), GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
     menu();
-    credits();
+    //credits_win();
 }
