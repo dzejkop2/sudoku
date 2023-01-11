@@ -1,3 +1,3 @@
 #Sudoku
 
--Work in progress-
+-alpha version released-
