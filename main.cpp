@@ -511,7 +511,7 @@ int menu()
 {
     string subor = "Sources/easy_layouts.txt";
     string menu[3] = { "Start", "Nastavenia", "Koniec" };
-    string nastavenia[2] = { "Obtiaznost", "Dzejkop je gay(kontrola policok)" };
+    string nastavenia[2] = { "Obtiaznost", "Work in progress(kontrola policok)" };
     string obtiaznosti[3] = { "Easy", "Medium", "Hard" };
     string entre = "\n \n \n \n \n \n \n \n \n \n \n \n";
     ///////////////////////////////////////
